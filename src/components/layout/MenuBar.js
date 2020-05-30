@@ -8,11 +8,11 @@ const MenuBar = () => {
   const [activeItem, setActiveItem] = useState(window.location.pathname);
   const handleItemClick = (e) => setActiveItem(e.target.name);
   return (
-    <div className="ui pointing secondary menu">
+    <div className="ui pointing secondary menu massive">
       <Link
         to="/"
         name="/"
-        className={`${activeItem === "/" && "active"} item`}
+        className={`${activeItem === "/" && "active teal"} item`}
         onClick={handleItemClick}
       >
         Home
@@ -21,7 +21,7 @@ const MenuBar = () => {
         <Link
           to="/login"
           name="/login"
-          className={`${activeItem === "/login" && "active"} item`}
+          className={`${activeItem === "/login" && "active teal"} item`}
           onClick={handleItemClick}
         >
           login
@@ -29,7 +29,7 @@ const MenuBar = () => {
         <Link
           to="/register"
           name="/register"
-          className={`${activeItem === "/register" && "active"} item`}
+          className={`${activeItem === "/register" && "active teal"} item`}
           onClick={handleItemClick}
         >
           Register
