@@ -7,6 +7,7 @@ const MenuBar = () => {
   //   active
   const [activeItem, setActiveItem] = useState(window.location.pathname);
   const handleItemClick = (e) => setActiveItem(e.target.name);
+  console.log(activeItem);
   return (
     <div className="ui pointing secondary menu massive">
       <Link
