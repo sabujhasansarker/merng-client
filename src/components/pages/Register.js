@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 // * appolo
 import gql from "graphql-tag";
@@ -7,7 +7,12 @@ import { useMutation } from "@apollo/react-hooks";
 //  * user from
 import { useForm } from "../../utils/hooks";
 
+// context api
+import { AuthContext } from "../../context/auth";
+
 const Register = ({ history }) => {
+  const context = useContext(AuthContext);
+
   const { onChange, onSubmit, fromData } = useForm(addUserCallback, {
     username: "",
     email: "",
@@ -22,7 +27,7 @@ const Register = ({ history }) => {
   // Add user
   const [register, { loading }] = useMutation(REGISTER, {
     update(_, result) {
-      console.log(result);
+      context.login(result.data.register);
       history.push("/");
     },
     onError(err) {
@@ -54,80 +59,91 @@ const Register = ({ history }) => {
           </div>
         </div>
       )}
-      <form className="ui form" onSubmit={onSubmit}>
-        <h1>Register</h1>
-        <div className="field">
-          <label>Username</label>
-          <div
-            className={`ui fluid input ${
-              error.errors.username && "field error"
-            }`}
-          >
-            <input
-              type="text"
-              aria-describedby="form-input-first-name-error-message"
-              aria-invalid="true"
-              placeholder="Username"
-              required
-              name="username"
-              onChange={(e) => onChange(e)}
-              value={fromData.username}
-            />
+      <div className="ui segment">
+        {loading && (
+          <div className="ui active transition visible inverted dimmer">
+            <div className="content">
+              <div className="ui medium text loader"></div>
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <label>Email</label>
-          <div
-            className={`ui fluid input ${error.errors.email && "field error"}`}
-          >
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              name="email"
-              value={fromData.email}
-              onChange={(e) => onChange(e)}
-            />
+        )}
+        <form className="ui form" onSubmit={onSubmit}>
+          <h1>Register</h1>
+          <div className="field">
+            <label>Username</label>
+            <div
+              className={`ui fluid input ${
+                error.errors.username && "field error"
+              }`}
+            >
+              <input
+                type="text"
+                aria-describedby="form-input-first-name-error-message"
+                aria-invalid="true"
+                placeholder="Username"
+                required
+                name="username"
+                onChange={(e) => onChange(e)}
+                value={fromData.username}
+              />
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <label>Password</label>
-          <div
-            className={`ui fluid input ${
-              error.errors.password && "field error"
-            }`}
-          >
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              name="password"
-              onChange={(e) => onChange(e)}
-              value={fromData.password}
-            />
+          <div className="field">
+            <label>Email</label>
+            <div
+              className={`ui fluid input ${
+                error.errors.email && "field error"
+              }`}
+            >
+              <input
+                type="email"
+                placeholder="Email"
+                required
+                name="email"
+                value={fromData.email}
+                onChange={(e) => onChange(e)}
+              />
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <label>Confirm Password</label>
-          <div
-            className={`ui fluid input ${
-              error.errors.confirmPassword && "field error"
-            }`}
-          >
-            <input
-              type="password"
-              required
-              placeholder="Confirm Password"
-              name="confirmPassword"
-              onChange={(e) => onChange(e)}
-              value={fromData.confirmPassword}
-            />
+          <div className="field">
+            <label>Password</label>
+            <div
+              className={`ui fluid input ${
+                error.errors.password && "field error"
+              }`}
+            >
+              <input
+                type="password"
+                placeholder="Password"
+                required
+                name="password"
+                onChange={(e) => onChange(e)}
+                value={fromData.password}
+              />
+            </div>
           </div>
-        </div>
-        <div className="field">
-          <input type="submit" className="ui button primary" value="Submit" />
-        </div>
-      </form>
+          <div className="field">
+            <label>Confirm Password</label>
+            <div
+              className={`ui fluid input ${
+                error.errors.confirmPassword && "field error"
+              }`}
+            >
+              <input
+                type="password"
+                required
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                onChange={(e) => onChange(e)}
+                value={fromData.confirmPassword}
+              />
+            </div>
+          </div>
+          <div className="field">
+            <input type="submit" className="ui button primary" value="Submit" />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

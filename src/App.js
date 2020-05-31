@@ -11,16 +11,24 @@ import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
 import MenuBar from "./components/layout/MenuBar";
 
+// Context api
+import { AuthProvider } from "./context/auth";
+
+// Auth route
+import AuthRoute from "./utils/AuthRoute";
+
 const App = () => {
   return (
-    <Router>
-      <div className="ui container">
-        <MenuBar />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="ui container">
+          <MenuBar />
+          <Route exact path="/" component={Home} />
+          <AuthRoute exact path="/login" component={Login} />
+          <AuthRoute exact path="/register" component={Register} />
+        </div>
+      </Router>
+    </AuthProvider>
   );
 };
 
