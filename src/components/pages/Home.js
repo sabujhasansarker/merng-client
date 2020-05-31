@@ -1,13 +1,18 @@
-import React from "react";
+import React, { Fragment, useContext } from "react";
 
 // Gql
-import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
+// Query
+import { FETCH_POSTS_QUERY } from "../../utils/graphql";
 
 // Component
 import PostCard from "../layout/PostCard";
+import PostForm from "../layout/PostForm";
+// context
+import { AuthContext } from "../../context/auth";
 
 const Home = () => {
+  const { user } = useContext(AuthContext);
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
   const posts = !loading && data.getPosts;
   return (
@@ -19,29 +24,23 @@ const Home = () => {
         {loading ? (
           <h1>Loading posts..</h1>
         ) : (
-          posts &&
-          posts.map((post) => (
-            <div className="column" key={post.id} style={{ boxShadow: "none" }}>
-              <PostCard post={post} />
-            </div>
-          ))
+          <Fragment>
+            {user && <PostForm />}
+            {posts &&
+              posts.map((post) => (
+                <div
+                  className="column"
+                  key={post.id}
+                  style={{ boxShadow: "none" }}
+                >
+                  <PostCard post={post} />
+                </div>
+              ))}
+          </Fragment>
         )}
       </div>
     </div>
   );
 };
-
-const FETCH_POSTS_QUERY = gql`
-  {
-    getPosts {
-      body
-      id
-      username
-      createdAt
-      likeCount
-      commentCount
-    }
-  }
-`;
 
 export default Home;

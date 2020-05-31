@@ -55,45 +55,43 @@ const Login = ({ history }) => {
           </div>
         </div>
       )}
-      <div className="ui segment">
-        {loading && (
-          <div className="ui active transition visible inverted dimmer">
-            <div className="content">
-              <div className="ui medium text loader"></div>
-            </div>
+      {loading && (
+        <div className="ui active transition visible inverted dimmer">
+          <div className="content">
+            <div className="ui medium text loader"></div>
           </div>
-        )}
-        <form className={`ui form `} onSubmit={onSubmit}>
-          <h1>Login</h1>
-          <div className="field">
-            <label>Username</label>
-            <div className="ui fluid input">
-              <input
-                type="text"
-                placeholder="Username"
-                name="username"
-                value={fromData.username}
-                onChange={(e) => onChange(e)}
-              />
-            </div>
+        </div>
+      )}
+      <form className={`ui form `} onSubmit={onSubmit}>
+        <h1>Login</h1>
+        <div className="field">
+          <label>Username</label>
+          <div className="ui fluid input">
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              value={fromData.username}
+              onChange={(e) => onChange(e)}
+            />
           </div>
-          <div className="field">
-            <label>Password</label>
-            <div className="ui fluid input">
-              <input
-                type="password"
-                placeholder="Password"
-                name="password"
-                value={fromData.password}
-                onChange={(e) => onChange(e)}
-              />
-            </div>
+        </div>
+        <div className="field">
+          <label>Password</label>
+          <div className="ui fluid input">
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              value={fromData.password}
+              onChange={(e) => onChange(e)}
+            />
           </div>
-          <div className="field">
-            <input type="submit" className="ui button primary" value="Submit" />
-          </div>
-        </form>
-      </div>
+        </div>
+        <div className="field">
+          <input type="submit" className="ui button primary" value="Submit" />
+        </div>
+      </form>
     </div>
   );
 };
