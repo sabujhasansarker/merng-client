@@ -10,6 +10,7 @@ import PostCard from "../layout/PostCard";
 import PostForm from "../layout/PostForm";
 // context
 import { AuthContext } from "../../context/auth";
+import { Transition } from "semantic-ui-react";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
@@ -26,16 +27,19 @@ const Home = () => {
         ) : (
           <Fragment>
             {user && <PostForm />}
-            {posts &&
-              posts.map((post) => (
-                <div
-                  className="column"
-                  key={post.id}
-                  style={{ boxShadow: "none" }}
-                >
-                  <PostCard post={post} />
-                </div>
-              ))}
+
+            <Transition.Group duration="1000">
+              {posts &&
+                posts.map((post) => (
+                  <div
+                    className="column"
+                    key={post.id}
+                    style={{ boxShadow: "none" }}
+                  >
+                    <PostCard post={post} />
+                  </div>
+                ))}
+            </Transition.Group>
           </Fragment>
         )}
       </div>

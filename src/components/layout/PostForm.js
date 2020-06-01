@@ -13,7 +13,6 @@ const PostForm = () => {
   const { fromData, onChange, onSubmit } = useForm(createPostCallback, {
     body: "",
   });
-
   // mutation
   const [createPost, { error }] = useMutation(CREATE_POST_MUTATION, {
     variables: fromData,
@@ -27,13 +26,22 @@ const PostForm = () => {
       });
       fromData.body = "";
     },
+    onError(err) {
+      console.log(err.graphQLErrors[0].message);
+    },
   });
-
   function createPostCallback() {
     createPost();
   }
   return (
     <div className="column">
+      {error && (
+        <div className="ui error message" style={{ marginBottom: 20 }}>
+          <ul className="list">
+            <li>{error.graphQLErrors[0].message}</li>
+          </ul>
+        </div>
+      )}
       <form className="ui form" onSubmit={onSubmit}>
         <h2>Create a post:</h2>
         <div className="field">
