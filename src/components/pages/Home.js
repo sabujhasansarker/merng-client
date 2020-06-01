@@ -12,6 +12,9 @@ import PostForm from "../layout/PostForm";
 import { AuthContext } from "../../context/auth";
 import { Transition } from "semantic-ui-react";
 
+// component
+import Spnnier from "../layout/Sppiner";
+
 const Home = () => {
   const { user } = useContext(AuthContext);
   const { loading, data } = useQuery(FETCH_POSTS_QUERY);
@@ -23,7 +26,7 @@ const Home = () => {
       </div>
       <div className="row">
         {loading ? (
-          <h1>Loading posts..</h1>
+          <Spnnier />
         ) : (
           <Fragment>
             {user && <PostForm />}

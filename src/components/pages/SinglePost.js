@@ -9,6 +9,7 @@ import { AuthContext } from "../../context/auth";
 // component
 import LikeBtn from "../layout/LikeBtn";
 import DeleteBtn from "../layout/DeleteBtn";
+import Spnnier from "../layout/Sppiner";
 
 // ui
 import { Transition } from "semantic-ui-react";
@@ -42,7 +43,7 @@ const SinglePost = ({ match, history }) => {
 
   let postMarkup;
   if (loading) {
-    postMarkup = <p>Loading post..</p>;
+    postMarkup = <Spnnier />;
   } else {
     const {
       username,
@@ -61,6 +62,7 @@ const SinglePost = ({ match, history }) => {
             <img
               src="https://react.semantic-ui.com/images/avatar/large/molly.png"
               className="ui right floated image"
+              alt=""
             />
           </div>
           <div className="thirteen wide column">

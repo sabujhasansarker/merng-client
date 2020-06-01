@@ -24,6 +24,7 @@ const PostCard = ({
           <img
             src="https://react.semantic-ui.com/images/avatar/large/molly.png"
             className="ui mini right floated image"
+            alt="profile-img"
           />
           <div className="header">{username}</div>
           <Link to={`/post/${id}`} className="meta">
@@ -48,7 +49,7 @@ const PostCard = ({
                 </div>
               </Link>
             </MyPopup>
-            {user && user.username == username && <DeleteBtn postId={id} />}
+            {user && user.username === username && <DeleteBtn postId={id} />}
           </div>
         </div>
       </div>

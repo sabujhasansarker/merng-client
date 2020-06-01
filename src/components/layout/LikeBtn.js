@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 // gql
 import gql from "graphql-tag";
@@ -21,22 +21,37 @@ const LikeBtn = ({ user, post: { likeCount, likes, id } }) => {
   });
 
   const likeBtn = user ? (
-    <button
-      onClick={likePost}
-      className={`ui teal ${liked ? "" : "basic"} button`}
-    >
-      <i aria-hidden="true" className="heart icon"></i>
-    </button>
+    <MyPopup content={`${liked ? "Unlike" : "Like"}`}>
+      <div
+        className="ui labeled button"
+        role="button"
+        tabIndex="0"
+        onClick={user && likePost}
+      >
+        <button className={`ui teal ${liked ? "" : "basic"} button`}>
+          <i aria-hidden="true" className="heart icon"></i>
+        </button>
+        <div className="ui teal left pointing basic label">{likeCount}</div>
+      </div>
+    </MyPopup>
   ) : (
-    <Link to="/login" className="ui teal basic button">
-      <i aria-hidden="true" className="heart icon"></i>
-    </Link>
+    <MyPopup content={`${liked ? "Unlike" : "Like"}`}>
+      <Link
+        to="/login"
+        className="ui labeled button"
+        role="button"
+        tabIndex="0"
+      >
+        <button className={`ui teal  basic button`}>
+          <i aria-hidden="true" className="heart icon"></i>
+        </button>
+        <div className="ui teal left pointing basic label">{likeCount}</div>
+      </Link>
+    </MyPopup>
   );
-
   return (
     <div className="ui right labeled button" role="button">
-      <MyPopup content={`${liked ? "Unlike" : "Like"}`}>{likeBtn}</MyPopup>
-      <a className="ui teal left pointing basic label">{likeCount}</a>
+      {likeBtn}
     </div>
   );
 };

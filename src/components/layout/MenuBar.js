@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 // link
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // Context api
 import { AuthContext } from "../../context/auth";
@@ -12,6 +12,13 @@ const MenuBar = () => {
   const [activeItem, setActiveItem] = useState(window.location.pathname);
   const handleItemClick = (e) => setActiveItem(e.target.name);
 
+  // active
+  const history = useHistory();
+  useEffect(() => {
+    return history.listen((location) => {
+      setActiveItem(location.pathname);
+    });
+  }, [history]);
   // menu
   const menuBar = user ? (
     <div className="ui pointing secondary menu massive">
