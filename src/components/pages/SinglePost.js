@@ -1,20 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useState } from "react";
 // moument
 import moment from "moment";
 // GQL
 import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 // context
 import { AuthContext } from "../../context/auth";
 // component
 import LikeBtn from "../layout/LikeBtn";
 import DeleteBtn from "../layout/DeleteBtn";
 
+// ui
+import { Transition } from "semantic-ui-react";
+
 const SinglePost = ({ match, history }) => {
   const { user } = useContext(AuthContext);
   const postId = match.params.postid;
+
+  // comment
+  let commentInputRef = useRef(null);
+  const [comment, setComment] = useState("");
+
+  // Query
   const { data, loading } = useQuery(FETCH_POST_QUERY, {
     variables: { postId },
+  });
+
+  // mutation
+  const [submitComment] = useMutation(SUBMIT_COMMENT_MUTATION, {
+    update() {
+      setComment("");
+      commentInputRef.current.blur();
+    },
+    variables: { postId, body: comment },
   });
 
   function deletePostCallback() {
@@ -33,6 +51,7 @@ const SinglePost = ({ match, history }) => {
       commentCount,
       createdAt,
       likes,
+      comments,
     } = data.getPost;
     postMarkup = (
       <div className="ui grid">
@@ -73,23 +92,56 @@ const SinglePost = ({ match, history }) => {
                 )}
               </div>
             </div>
-            <div className="ui fluid card">
-              <div className="content">
-                <p>Post a comment</p>
-                <form className="ui form">
-                  <div className="ui action input fluid">
-                    <input type="text" placeholder="Comment.." name="comment" />
-                    <button
-                      className={`ui ${!user ? "disabled" : ""} button teal`}
-                      disabled=""
-                      tabIndex="-1"
-                    >
-                      Submit Comment
-                    </button>
-                  </div>
-                </form>
+            {user && (
+              <div className="ui fluid card">
+                <div className="content">
+                  <p>Post a comment</p>
+                  <form
+                    className="ui form"
+                    onSubmit={(e) => e.preventDefault()}
+                  >
+                    <div className="ui action input fluid">
+                      <input
+                        type="text"
+                        placeholder="Comment.."
+                        name="comment"
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        ref={commentInputRef}
+                      />
+                      <button
+                        className={`ui ${
+                          comment.trim() === "" ? "disabled" : ""
+                        } button teal`}
+                        disabled=""
+                        tabIndex="-1"
+                        onClick={submitComment}
+                      >
+                        Submit Comment
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
+            )}
+            <Transition.Group duration="600">
+              {comments &&
+                comments.map((comment) => (
+                  <div className="ui fluid card" key={comment.id}>
+                    <div className="content">
+                      {user && user.username === comment.username && (
+                        <DeleteBtn postId={id} commentId={comment.id} />
+                      )}
+
+                      <div className="header">{comment.username}</div>
+                      <div className="meta">
+                        {moment(comment.createdAt).fromNow(true)}
+                      </div>
+                      <div className="description">{comment.body}</div>
+                    </div>
+                  </div>
+                ))}
+            </Transition.Group>
           </div>
         </div>
       </div>
@@ -117,6 +169,21 @@ const FETCH_POST_QUERY = gql`
         createdAt
         body
       }
+    }
+  }
+`;
+
+const SUBMIT_COMMENT_MUTATION = gql`
+  mutation($postId: String!, $body: String!) {
+    createComment(postId: $postId, body: $body) {
+      id
+      comments {
+        id
+        body
+        createdAt
+        username
+      }
+      commentCount
     }
   }
 `;

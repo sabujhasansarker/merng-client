@@ -6,20 +6,24 @@ import { useMutation } from "@apollo/react-hooks";
 // quiery
 import { FETCH_POSTS_QUERY } from "../../utils/graphql";
 
-const DeleteBtn = ({ postId, callBack }) => {
+const DeleteBtn = ({ postId, callBack, commentId }) => {
   const [confirmBtn, setConfirmBtn] = useState(false);
-  const [deletePost] = useMutation(DELETE_POST, {
+
+  const mutation = commentId ? DELETE_COMMENT_POST : DELETE_POST;
+
+  const [deletePostOrMutation] = useMutation(mutation, {
     update(proxy) {
       setConfirmBtn(false);
-
-      const data = proxy.readQuery({ query: FETCH_POSTS_QUERY });
-      proxy.writeQuery({
-        query: FETCH_POSTS_QUERY,
-        data: { getPosts: data.getPosts.filter((p) => p.id !== postId) },
-      });
+      if (!commentId) {
+        const data = proxy.readQuery({ query: FETCH_POSTS_QUERY });
+        proxy.writeQuery({
+          query: FETCH_POSTS_QUERY,
+          data: { getPosts: data.getPosts.filter((p) => p.id !== postId) },
+        });
+      }
       if (callBack) callBack();
     },
-    variables: { postId },
+    variables: { postId, commentId },
   });
   return (
     <Fragment>
@@ -37,13 +41,13 @@ const DeleteBtn = ({ postId, callBack }) => {
       </div>
       {confirmBtn && (
         <div
-          class="ui page modals dimmer transition visible active"
+          className="ui page modals dimmer transition visible active"
           style={{
             display: "flex !important",
           }}
         >
           <div
-            class="ui small modal transition visible active"
+            className="ui small modal transition visible active"
             style={{
               position: "fixed",
               top: "50%",
@@ -51,12 +55,18 @@ const DeleteBtn = ({ postId, callBack }) => {
               transform: "translate(-50%, -50%)",
             }}
           >
-            <div class="content">Are you sure?</div>
-            <div class="actions">
-              <button class="ui button" onClick={() => setConfirmBtn(false)}>
+            <div className="content">Are you sure?</div>
+            <div className="actions">
+              <button
+                className="ui button"
+                onClick={() => setConfirmBtn(false)}
+              >
                 Cancel
               </button>
-              <button class="ui primary button" onClick={deletePost}>
+              <button
+                className="ui primary button"
+                onClick={deletePostOrMutation}
+              >
                 OK
               </button>
             </div>
@@ -70,6 +80,20 @@ const DeleteBtn = ({ postId, callBack }) => {
 const DELETE_POST = gql`
   mutation DeletePost($postId: ID!) {
     deletePost(postId: $postId)
+  }
+`;
+const DELETE_COMMENT_POST = gql`
+  mutation DeletePost($postId: ID!, $commentId: ID!) {
+    deleteComment(postId: $postId, commentId: $commentId) {
+      id
+      comments {
+        id
+        username
+        createdAt
+        body
+      }
+      commentCount
+    }
   }
 `;
 
