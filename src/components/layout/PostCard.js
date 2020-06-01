@@ -9,6 +9,7 @@ import { AuthContext } from "../../context/auth";
 
 // Component
 import LikeBtn from "./LikeBtn";
+import DeleteBtn from "./DeleteBtn";
 
 const PostCard = ({
   post: { body, id, createdAt, likeCount, commentCount, username, likes },
@@ -44,19 +45,7 @@ const PostCard = ({
                 {commentCount}
               </div>
             </Link>
-            {user && user.username == username && (
-              <div
-                className="ui red right floated button"
-                role="button"
-                tabIndex="0"
-              >
-                <i
-                  aria-hidden="true"
-                  className="trash icon"
-                  style={{ margin: "0px" }}
-                ></i>
-              </div>
-            )}
+            {user && user.username == username && <DeleteBtn postId={id} />}
           </div>
         </div>
       </div>

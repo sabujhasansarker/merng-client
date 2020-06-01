@@ -28,7 +28,7 @@ const Home = () => {
           <Fragment>
             {user && <PostForm />}
 
-            <Transition.Group duration="1000">
+            <Transition.Group duration="700">
               {posts &&
                 posts.map((post) => (
                   <div
