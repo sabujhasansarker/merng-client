@@ -5,6 +5,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 // quiery
 import { FETCH_POSTS_QUERY } from "../../utils/graphql";
+import MyPopup from "../../utils/MyPopup";
 
 const DeleteBtn = ({ postId, callBack, commentId }) => {
   const [confirmBtn, setConfirmBtn] = useState(false);
@@ -27,18 +28,21 @@ const DeleteBtn = ({ postId, callBack, commentId }) => {
   });
   return (
     <Fragment>
-      <div
-        className="ui red right floated button"
-        role="button"
-        tabIndex="0"
-        onClick={() => setConfirmBtn(true)}
-      >
-        <i
-          aria-hidden="true"
-          className="trash icon"
-          style={{ margin: "0px" }}
-        ></i>
-      </div>
+      <MyPopup content={commentId ? "Delete comment" : "Delete post"}>
+        <div
+          className="ui red right floated button"
+          role="button"
+          tabIndex="0"
+          onClick={() => setConfirmBtn(true)}
+        >
+          <i
+            aria-hidden="true"
+            className="trash icon"
+            style={{ margin: "0px" }}
+          ></i>
+        </div>
+      </MyPopup>
+
       {confirmBtn && (
         <div
           className="ui page modals dimmer transition visible active"

@@ -12,6 +12,7 @@ import DeleteBtn from "../layout/DeleteBtn";
 
 // ui
 import { Transition } from "semantic-ui-react";
+import MyPopup from "../../utils/MyPopup";
 
 const SinglePost = ({ match, history }) => {
   const { user } = useContext(AuthContext);
@@ -75,18 +76,20 @@ const SinglePost = ({ match, history }) => {
                   user={user}
                   post={{ id, likeCount, username, likes }}
                 />
-                <div
-                  className="ui right labeled button"
-                  role="button"
-                  tabIndex="0"
-                >
-                  <button className="ui blue basic button">
-                    <i aria-hidden="true" className="comments icon"></i>
-                  </button>
-                  <div className="ui blue left pointing basic label">
-                    {commentCount}
+                <MyPopup content="Comment on post">
+                  <div
+                    className="ui right labeled button"
+                    role="button"
+                    tabIndex="0"
+                  >
+                    <button className="ui blue basic button">
+                      <i aria-hidden="true" className="comments icon"></i>
+                    </button>
+                    <div className="ui blue left pointing basic label">
+                      {commentCount}
+                    </div>
                   </div>
-                </div>
+                </MyPopup>
                 {user && user.username === username && (
                   <DeleteBtn postId={id} callBack={deletePostCallback} />
                 )}

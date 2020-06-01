@@ -10,6 +10,7 @@ import { AuthContext } from "../../context/auth";
 // Component
 import LikeBtn from "./LikeBtn";
 import DeleteBtn from "./DeleteBtn";
+import MyPopup from "../../utils/MyPopup";
 
 const PostCard = ({
   post: { body, id, createdAt, likeCount, commentCount, username, likes },
@@ -33,18 +34,20 @@ const PostCard = ({
         <div className="extra content">
           <div>
             <LikeBtn user={user} post={{ id, likeCount, username, likes }} />
-            <Link
-              className="ui right labeled button"
-              role="button"
-              to={`/post/${id}`}
-            >
-              <button className="ui blue basic button">
-                <i aria-hidden="true" className="comments icon"></i>
-              </button>
-              <div className="ui blue left pointing basic label">
-                {commentCount}
-              </div>
-            </Link>
+            <MyPopup content="Comment on post">
+              <Link
+                className="ui right labeled button"
+                role="button"
+                to={`/post/${id}`}
+              >
+                <button className="ui blue basic button">
+                  <i aria-hidden="true" className="comments icon"></i>
+                </button>
+                <div className="ui blue left pointing basic label">
+                  {commentCount}
+                </div>
+              </Link>
+            </MyPopup>
             {user && user.username == username && <DeleteBtn postId={id} />}
           </div>
         </div>

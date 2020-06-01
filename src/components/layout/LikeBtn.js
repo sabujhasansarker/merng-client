@@ -6,6 +6,7 @@ import { useMutation } from "@apollo/react-hooks";
 
 // like
 import { Link } from "react-router-dom";
+import MyPopup from "../../utils/MyPopup";
 
 const LikeBtn = ({ user, post: { likeCount, likes, id } }) => {
   const [liked, setLiked] = useState(false);
@@ -34,7 +35,7 @@ const LikeBtn = ({ user, post: { likeCount, likes, id } }) => {
 
   return (
     <div className="ui right labeled button" role="button">
-      {likeBtn}
+      <MyPopup content={`${liked ? "Unlike" : "Like"}`}>{likeBtn}</MyPopup>
       <a className="ui teal left pointing basic label">{likeCount}</a>
     </div>
   );
