@@ -1,5 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+# Book List  [<img  src="https://img.shields.io/badge/%20Merng%20client -Live-brightgreen"/>](https://hi-world.netlify.app)
 ## Available Scripts
 
 In the project directory, you can run:
@@ -66,3 +65,15 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+----------
+
+# [](https://github.com/sabujhasansarker/Dev-Connector#app-info)App info
+
+### [](https://github.com/sabujhasansarker/Dev-Connector#author)Author
+
+Sabuj Hasan Sarker
+
+### [](https://github.com/sabujhasansarker/Dev-Connector#live)Live
+
+[MERNG Client](https://hi-world.netlify.app)
